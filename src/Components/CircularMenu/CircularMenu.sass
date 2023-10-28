@@ -1,0 +1,22 @@
+@import "src/Styles/variables.sass"
+
+.circular-menu
+	position: absolute
+	width: 40px
+	height: 40px
+	z-index: 1000
+
+	&.open
+		.menu-item
+			opacity: 1
+
+	.menu-item
+		left: 0
+		position: absolute
+		top: 0
+		border-radius: 50%
+		height: 100%
+		transition: all 0.2s ease
+		width: 100%
+		background: $secondary
+		opacity: 0

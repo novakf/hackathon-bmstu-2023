@@ -1,8 +1,9 @@
-import React, { useEffect, useState } from "react";
+import React, {useEffect, useRef, useState} from "react";
 import SpaceCraft from "../../icons/SpaceCraft";
 import styled from "styled-components";
 import Tooltip from "../../Components/MainPage/ToolTip";
 import MapPointIcon from "../../icons/MapPointIcon";
+import CircularMenu from "../../Components/CircularMenu/CircularMenu";
 
 const MainPage: React.FC = () => {
   const [positionX, setPositionX] = useState(0);
@@ -39,6 +40,7 @@ const MainPage: React.FC = () => {
     setPoints((prev) => [...prev, { x: positionX, y: positionY }]);
   }, [positionX, positionY]);
 
+
   return (
     <Container>
       <Title>Route map</Title>
@@ -50,13 +52,14 @@ const MainPage: React.FC = () => {
         </Coordinates>
       </InfoContainer>
       <Map>
-        <Layout positionx={positionX} positiony={positionY}>
+        <Layout positionx={positionX} positiony={positionY}  >
           <Tooltip title={<div>SpaceCraft</div>}>
             <ModelContainer
               positionx={positionX}
               positiony={positionY}
               rotatedeg={rotateDeg}
             >
+              <CircularMenu />
               <SpaceCraft />
             </ModelContainer>
             {points.map((point, i) => {

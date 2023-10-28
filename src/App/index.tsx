@@ -5,16 +5,11 @@ import "../Styles/Main.sass"
 import "../Styles/Reset.sass"
 import "../Styles/Fonts.sass"
 import "../Styles/variables.sass"
-import LoginPage from "../pages/LoginPage/LoginPage";
 import Header from "../Components/Header/Header";
-import {Provider} from "react-redux";
-import store from "../store/store";
 
 
 const App: React.FC = () => {
   return (
-
-      <Provider store={store}>
 
       <BrowserRouter>
 
@@ -26,14 +21,13 @@ const App: React.FC = () => {
 
                       <Routes>
                           <Route path="/" element={<MainPage />} />
-                          <Route path="/login" element={<LoginPage />} />
                       </Routes>
 
                   </div>
 
               </div>
+
         </BrowserRouter>
-      </Provider>
   );
 };
 
