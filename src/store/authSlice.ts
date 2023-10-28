@@ -14,7 +14,6 @@ const authSlice = createSlice({
 			state.user_id = action.payload.user_id
 			state.user_name = action.payload.user_name
 			state.is_authenticated = action.payload.is_authenticated
-			state.is_moderator = action.payload.is_moderator
 		},
 		logOut: (state) => {
 			state.is_authenticated = false
