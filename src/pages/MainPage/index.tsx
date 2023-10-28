@@ -1,8 +1,13 @@
-import React, { useEffect, useState } from "react";
+import React, { createRef, useEffect, useState } from "react";
 import SpaceCraft from "../../icons/SpaceCraft";
 import styled from "styled-components";
 import Tooltip from "../../Components/MainPage/ToolTip";
 import MapPointIcon from "../../icons/MapPointIcon";
+import Color from "../../Components/MainPage/Color";
+import html2canvas from "html2canvas";
+
+const rgbToHex = (r, g, b) =>
+  `#${((r << 16) | (g << 8) | b).toString(16).padStart(6, "0")}`;
 
 const MainPage: React.FC = () => {
   const [positionX, setPositionX] = useState(0);
@@ -39,6 +44,23 @@ const MainPage: React.FC = () => {
     setPoints((prev) => [...prev, { x: positionX, y: positionY }]);
   }, [positionX, positionY]);
 
+  useEffect(() => {
+    html2canvas(document.querySelector("#search")).then((canvas) => {
+      var c = canvas.getContext("2d");
+      var pixelData = c.getImageData(0, 0, 1, 1).data;
+      const [red, green, blue] = pixelData;
+
+      console.log(canvas);
+
+      // Convert RGB values to hex code
+      const hexCode = rgbToHex(red, green, blue);
+
+      console.log("Background color:", hexCode);
+
+      document.body.appendChild(canvas);
+    });
+  }, [positionX, positionY]);
+
   return (
     <Container>
       <Title>Route map</Title>
@@ -47,16 +69,19 @@ const MainPage: React.FC = () => {
         <Coordinates>
           <div>Lat: -13.29414°</div>
           <div>Lon: -10.92728°</div>
+          <CoordinatesTitle>Status</CoordinatesTitle>
+          <div style={{ color: "green" }}>Active</div>
         </Coordinates>
       </InfoContainer>
       <Map>
-        <Layout positionx={positionX} positiony={positionY}>
+        <Layout id="layout" positionx={positionX} positiony={positionY}>
           <Tooltip title={<div>SpaceCraft</div>}>
             <ModelContainer
               positionx={positionX}
               positiony={positionY}
               rotatedeg={rotateDeg}
             >
+              <Lights id="search" />
               <SpaceCraft />
             </ModelContainer>
             {points.map((point, i) => {
@@ -77,11 +102,21 @@ const MainPage: React.FC = () => {
       <MapInfo>
         Map scale:
         <SizeLine />
-        <MapSize>210km</MapSize>
+        <MapSize>100km</MapSize>
       </MapInfo>
     </Container>
   );
 };
+
+const Lights = styled.div`
+  position: absolute;
+  background: transparent;
+  width: 50px;
+  height: 50px;
+  top: -74px;
+  left: -7px;
+  z-index: 0;
+`;
 
 const Point = styled.div<{
   positionx: number;
@@ -138,7 +173,7 @@ const InfoContainer = styled.div`
   flex-direction: column;
   background: #00000069;
   width: 150px;
-  margin-bottom: 455px;
+  margin-bottom: 410px;
   margin-left: 0;
   border-top-right-radius: 10px;
   border-bottom-right-radius: 10px;
@@ -196,13 +231,16 @@ const Map = styled.div`
   z-index: 0;
 `;
 
-const Layout = styled.div<{ positionx: number; positiony: number }>`
+const Layout = styled.div<{
+  positionx: number;
+  positiony: number;
+}>`
   width: 30000px;
   height: 30000px;
   margin-left: calc(-15000px + ${(props) => props.positionx}px);
   margin-top: calc(2 * ${(props) => props.positiony}px);
-  background: url("/src/assets/background1.jpg");
-  background-size: 3000px;
+  background: url("/src/assets/background2.jpg");
+  background-size: 2000px;
   z-index: 0;
 
   transition: all 0.1s;

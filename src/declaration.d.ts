@@ -9,3 +9,5 @@ declare module '*.png' {
 }
 
 declare module 'crypto-js';
+
+declare module 'use-react-screenshot';
