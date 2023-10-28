@@ -4,6 +4,10 @@ import styled from "styled-components";
 import Tooltip from "../../Components/MainPage/ToolTip";
 import MapPointIcon from "../../icons/MapPointIcon";
 import CircularMenu from "../../Components/CircularMenu/CircularMenu";
+import html2canvas from "html2canvas";
+
+const rgbToHex = (r: number, g: number, b: number) =>
+  `#${((r << 16) | (g << 8) | b).toString(16).padStart(6, "0")}`;
 
 const MainPage: React.FC = () => {
   const [positionX, setPositionX] = useState(0);
@@ -14,7 +18,6 @@ const MainPage: React.FC = () => {
 
   useEffect(() => {
     const handleKey = (e: KeyboardEvent) => {
-      console.log(e.key);
       if (e.key === "ArrowLeft") {
         setPositionX((prev) => (prev += 10));
         setRotateDeg(-90);
@@ -40,6 +43,49 @@ const MainPage: React.FC = () => {
     setPoints((prev) => [...prev, { x: positionX, y: positionY }]);
   }, [positionX, positionY]);
 
+  useEffect(() => {
+    html2canvas((document as any).querySelector("#layout")).then((canvas) => {
+      let c = canvas.getContext("2d");
+
+      if (!c) {
+        console.log("canvas error");
+        return;
+      }
+
+      canvas.style.filter = "brightness(3.5)";
+
+      let posX = 550,
+        posY = 300;
+
+      if (rotateDeg === -90) {
+        posX = 550 - 60;
+        posY = 300;
+      }
+
+      if (rotateDeg === 90) {
+        posX = 550 + 70;
+        posY = 300;
+      }
+
+      if (rotateDeg === 0) {
+        posX = 550;
+        posY = 300 - 70;
+      }
+
+      if (rotateDeg === 180) {
+        posX = 550;
+        posY = 300 + 100;
+      }
+
+      var pixelData = c.getImageData(posX, posY, 1, 1).data;
+      const [red, green, blue] = pixelData;
+
+      const hexCode = rgbToHex(red, green, blue);
+
+      console.log("Background color:", hexCode);
+      // document.body.appendChild(canvas);
+    });
+  }, [positionX, positionY]);
 
   return (
     <Container>
@@ -51,8 +97,8 @@ const MainPage: React.FC = () => {
           <div>Lon: -10.92728°</div>
         </Coordinates>
       </InfoContainer>
-      <Map>
-        <Layout positionx={positionX} positiony={positionY}  >
+      <Map id="layout">
+        <Layout positionx={positionX} positiony={positionY}>
           <Tooltip title={<div>SpaceCraft</div>}>
             <ModelContainer
               positionx={positionX}
@@ -62,13 +108,14 @@ const MainPage: React.FC = () => {
               <CircularMenu />
               <SpaceCraft />
             </ModelContainer>
+
             {points.map((point, i) => {
               return (
                 <Point
                   key={i}
                   positionx={i === 0 ? point.x + 14 : point.x}
                   positiony={i === 0 ? point.y + 14 : point.y}
-                  startPoint={i === 0}
+                  startpoint={(i === 0).toString()}
                 >
                   {i === 0 && <MapPointIcon />}
                 </Point>
@@ -89,7 +136,7 @@ const MainPage: React.FC = () => {
 const Point = styled.div<{
   positionx: number;
   positiony: number;
-  startPoint: boolean;
+  startpoint: string;
 }>`
   width: 5px;
   height: 5px;
@@ -99,7 +146,7 @@ const Point = styled.div<{
   border-radius: 50%;
 
   ${(props) =>
-    !props.startPoint &&
+    props.startpoint === "false" &&
     `
    background: red;
   `}
