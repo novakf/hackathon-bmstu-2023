@@ -1,4 +1,4 @@
-import React, {useEffect, useRef, useState} from "react";
+import React, {useEffect, useState} from "react";
 import SpaceCraft from "../../icons/SpaceCraft";
 import styled from "styled-components";
 import Tooltip from "../../Components/MainPage/ToolTip";
