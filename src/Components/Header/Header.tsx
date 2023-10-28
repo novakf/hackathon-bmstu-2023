@@ -1,5 +1,5 @@
 import "./Header.sass"
-import logo from "../../icons/NASA-Logo.png"
+import logo from "../../assets/NASA-Logo.png"
 
 const Header = () => {
     return (

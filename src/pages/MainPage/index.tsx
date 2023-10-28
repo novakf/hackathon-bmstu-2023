@@ -2,11 +2,14 @@ import React, { useEffect, useState } from "react";
 import SpaceCraft from "../../icons/SpaceCraft";
 import styled from "styled-components";
 import Tooltip from "../../Components/MainPage/ToolTip";
+import MapPointIcon from "../../icons/MapPointIcon";
 
 const MainPage: React.FC = () => {
-  const [positionX, setPositionX] = useState(-100);
-  const [positionY, setPositionY] = useState(-100);
+  const [positionX, setPositionX] = useState(0);
+  const [positionY, setPositionY] = useState(0);
   const [rotateDeg, setRotateDeg] = useState(0);
+
+  const [points, setPoints] = useState([{ x: positionX, y: positionY }]);
 
   useEffect(() => {
     const handleKey = (e: KeyboardEvent) => {
@@ -32,6 +35,10 @@ const MainPage: React.FC = () => {
     return () => window.removeEventListener("keydown", handleKey);
   }, []);
 
+  useEffect(() => {
+    setPoints((prev) => [...prev, { x: positionX, y: positionY }]);
+  }, [positionX, positionY]);
+
   return (
     <Container>
       <Title>Route map</Title>
@@ -42,13 +49,31 @@ const MainPage: React.FC = () => {
           <div>Lon: -10.92728°</div>
         </Coordinates>
       </InfoContainer>
-      <Layout positionx={positionX} positiony={positionY}>
-        <Tooltip title={<div>SpaceCraft</div>}>
-          <ModelContainer rotateDeg={rotateDeg}>
-            <SpaceCraft />
-          </ModelContainer>
-        </Tooltip>
-      </Layout>
+      <Map>
+        <Layout positionx={positionX} positiony={positionY}>
+          <Tooltip title={<div>SpaceCraft</div>}>
+            <ModelContainer
+              positionx={positionX}
+              positiony={positionY}
+              rotatedeg={rotateDeg}
+            >
+              <SpaceCraft />
+            </ModelContainer>
+            {points.map((point, i) => {
+              return (
+                <Point
+                  key={i}
+                  positionx={i === 0 ? point.x + 14 : point.x}
+                  positiony={i === 0 ? point.y + 14 : point.y}
+                  startPoint={i === 0}
+                >
+                  {i === 0 && <MapPointIcon />}
+                </Point>
+              );
+            })}
+          </Tooltip>
+        </Layout>
+      </Map>
       <MapInfo>
         Map scale:
         <SizeLine />
@@ -57,6 +82,26 @@ const MainPage: React.FC = () => {
     </Container>
   );
 };
+
+const Point = styled.div<{
+  positionx: number;
+  positiony: number;
+  startPoint: boolean;
+}>`
+  width: 5px;
+  height: 5px;
+  position: absolute;
+  top: calc(15000px - ${(props) => props.positiony}px + 20px);
+  left: calc(15550px - ${(props) => props.positionx}px + 18px);
+
+  ${(props) =>
+    !props.startPoint &&
+    `
+   background: red;
+  `}
+
+  z-index: 3;
+`;
 
 const SizeLine = styled.div`
   border-bottom: 2px solid;
@@ -111,11 +156,19 @@ const Title = styled.div`
   font-size: 35px;
 `;
 
-const ModelContainer = styled.div<{ rotateDeg: number }>`
+const ModelContainer = styled.div<{
+  rotatedeg: number;
+  positionx: number;
+  positiony: number;
+}>`
+  position: absolute;
+  top: calc(15000px - ${(props) => props.positiony}px);
+  left: calc(15550px - ${(props) => props.positionx}px);
   width: 40px;
-  transform: rotate(${(props) => props.rotateDeg}deg);
+  transform: rotate(${(props) => props.rotatedeg}deg);
   transition: transform 0.3s;
   cursor: pointer;
+  z-index: 4;
 `;
 
 const Container = styled.div`
@@ -125,20 +178,28 @@ const Container = styled.div`
   max-width: 1100px;
   flex-direction: column;
   margin: 0 auto;
+  z-index: 0;
 `;
 
-const Layout = styled.div<{ positionx: number; positiony: number }>`
+const Map = styled.div`
   display: flex;
   border-radius: 10px;
   align-items: center;
   justify-content: center;
   width: 1100px;
   height: 600px;
-  background: url("/src/assets/background1.jpg");
-  background-size: 130%;
-  background-position-x: ${(props) => `${props.positionx}px`};
-  background-position-y: ${(props) => `${props.positiony}px`};
   box-shadow: 0px 10px 10px 0px rgba(129, 129, 129, 0.25);
+  overflow: hidden;
+  z-index: 0;
+`;
+
+const Layout = styled.div<{ positionx: number; positiony: number }>`
+  width: 30000px;
+  height: 30000px;
+  margin-left: calc(-15000px + ${(props) => props.positionx}px);
+  margin-top: calc(2 * ${(props) => props.positiony}px);
+  background: url("/src/assets/background1.jpg");
+  z-index: 0;
 `;
 
 export default MainPage;

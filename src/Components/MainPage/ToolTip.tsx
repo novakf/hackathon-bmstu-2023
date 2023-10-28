@@ -9,7 +9,7 @@ type Props = {
 
 const Tooltip: React.FC<Props> = (props) => {
   const { children, title } = props
-  const [open, setOpen] = useState(false)
+  const [open, setOpen] = useState(true)
 
   let timeout: ReturnType<typeof setTimeout>
 
@@ -34,6 +34,7 @@ const TooltipWrapper = styled.div`
   display: flex;
   position: relative;
   justify-content: center;
+  z-index: 10;
 `
 
 const Tip = styled.div<{ $open: boolean }>`
