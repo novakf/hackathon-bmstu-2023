@@ -93,6 +93,7 @@ const Point = styled.div<{
   position: absolute;
   top: calc(15000px - ${(props) => props.positiony}px + 20px);
   left: calc(15550px - ${(props) => props.positionx}px + 18px);
+  border-radius: 50%;
 
   ${(props) =>
     !props.startPoint &&
@@ -147,6 +148,7 @@ const InfoContainer = styled.div`
   color: #f5f5f5d6;
   padding-left: 20px;
 
+  z-index: 5;
   &:hover {
     background: #000;
   }
@@ -169,6 +171,7 @@ const ModelContainer = styled.div<{
   transition: transform 0.3s;
   cursor: pointer;
   z-index: 4;
+  transition: all 0.1s;
 `;
 
 const Container = styled.div`
@@ -199,7 +202,10 @@ const Layout = styled.div<{ positionx: number; positiony: number }>`
   margin-left: calc(-15000px + ${(props) => props.positionx}px);
   margin-top: calc(2 * ${(props) => props.positiony}px);
   background: url("/src/assets/background1.jpg");
+  background-size: 3000px;
   z-index: 0;
+
+  transition: all 0.1s;
 `;
 
 export default MainPage;

@@ -9,7 +9,7 @@ type Props = {
 
 const Tooltip: React.FC<Props> = (props) => {
   const { children, title } = props
-  const [open, setOpen] = useState(true)
+  const [open, setOpen] = useState(false)
 
   let timeout: ReturnType<typeof setTimeout>
 
@@ -57,6 +57,7 @@ const Tip = styled.div<{ $open: boolean }>`
     opacity: 1;
     transform: scale(1);
   `}
+  z-index: 10;
 `
 
 export default Tooltip
