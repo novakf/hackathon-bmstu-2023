@@ -1,5 +1,4 @@
 import "./CirularMenuItem.sass"
-import {FaArrowDown, FaArrowLeft, FaArrowUp} from "react-icons/fa6";
 import {FaArrowRight} from "react-icons/fa";
 
 const CircularMenuItem = ({rotation, index}:{rotation:number, index:number}) => {
