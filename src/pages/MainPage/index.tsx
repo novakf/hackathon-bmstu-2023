@@ -9,13 +9,14 @@ import { WSconnect } from "../../model";
 import axios from "axios";
 
 const rgbToHex = (r: number, g: number, b: number) =>
-  `#${((r << 16) | (g << 8) | b).toString(16).padStart(6, "0")}`;
+  `${((r << 16) | (g << 8) | b).toString(16).padStart(6, "0")}`;
 
 const MainPage: React.FC = () => {
   const [positionX, setPositionX] = useState(0);
   const [positionY, setPositionY] = useState(0);
   const [rotateDeg, setRotateDeg] = useState(0);
   const [direction, setDirection] = useState(8);
+  const [charge, setCharge] = useState(100);
 
   const [points, setPoints] = useState([{ x: positionX, y: positionY }]);
 
@@ -39,6 +40,7 @@ const MainPage: React.FC = () => {
     setPositionX(res.data[res.data.length - 1].x);
     setPositionY(res.data[res.data.length - 1].y);
     setDirection(res.data[res.data.length - 1].dir);
+    setCharge(res.data[res.data.length - 1].charge);
   });
 
   console.log("MESSAGE", points, positionX, positionY);
@@ -94,7 +96,10 @@ const MainPage: React.FC = () => {
 
       const hexCode = rgbToHex(red, green, blue);
 
-      console.log("Background color:", hexCode);
+      console.log("Background color:", hexCode[0]);
+      if (Number(hexCode[0]) < 5) {
+        alert("Danger zone");
+      }
       //document.body.appendChild(canvas);
     });
   }, [positionX, positionY]);
@@ -102,11 +107,15 @@ const MainPage: React.FC = () => {
   return (
     <Container>
       <Title>Route map</Title>
+      <CircularMenu />
       <InfoContainer>
         <CoordinatesTitle>Coordinates</CoordinatesTitle>
         <Coordinates>
           <div>Lat: {positionX}</div>
           <div>Lon: {positionY}</div>
+          <div>
+            Power: <span style={{ color: "green" }}>{charge}</span>
+          </div>
         </Coordinates>
       </InfoContainer>
       <Map id="layout">
@@ -117,7 +126,6 @@ const MainPage: React.FC = () => {
               positiony={positionY}
               rotatedeg={rotateDeg}
             >
-              <CircularMenu />
               <SpaceCraft />
             </ModelContainer>
 
@@ -200,7 +208,7 @@ const InfoContainer = styled.div`
   flex-direction: column;
   background: #00000069;
   width: 150px;
-  margin-bottom: 455px;
+  margin-bottom: 420px;
   margin-left: 0;
   border-top-right-radius: 10px;
   border-bottom-right-radius: 10px;
