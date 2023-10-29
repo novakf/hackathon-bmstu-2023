@@ -1,10 +1,12 @@
-import React, {useEffect, useState} from "react";
+import React, { useEffect, useState } from "react";
 import SpaceCraft from "../../icons/SpaceCraft";
 import styled from "styled-components";
 import Tooltip from "../../Components/MainPage/ToolTip";
 import MapPointIcon from "../../icons/MapPointIcon";
 import CircularMenu from "../../Components/CircularMenu/CircularMenu";
 import html2canvas from "html2canvas";
+import { WSconnect } from "../../model";
+import axios from "axios";
 
 const rgbToHex = (r: number, g: number, b: number) =>
   `#${((r << 16) | (g << 8) | b).toString(16).padStart(6, "0")}`;
@@ -13,35 +15,45 @@ const MainPage: React.FC = () => {
   const [positionX, setPositionX] = useState(0);
   const [positionY, setPositionY] = useState(0);
   const [rotateDeg, setRotateDeg] = useState(0);
+  const [direction, setDirection] = useState(8);
 
   const [points, setPoints] = useState([{ x: positionX, y: positionY }]);
 
   useEffect(() => {
-    const handleKey = (e: KeyboardEvent) => {
-      if (e.key === "ArrowLeft") {
-        setPositionX((prev) => (prev += 10));
-        setRotateDeg(-90);
-      }
-      if (e.key === "ArrowRight") {
-        setPositionX((prev) => (prev -= 10));
-        setRotateDeg(90);
-      }
-      if (e.key === "ArrowUp") {
-        setPositionY((prev) => (prev += 10));
-        setRotateDeg(0);
-      }
-      if (e.key === "ArrowDown") {
-        setPositionY((prev) => (prev -= 10));
-        setRotateDeg(180);
-      }
-    };
-    window.addEventListener("keydown", handleKey);
-    return () => window.removeEventListener("keydown", handleKey);
-  }, []);
+    if (direction === 4) {
+      setRotateDeg(-90);
+    }
+    if (direction === 0) {
+      setRotateDeg(90);
+    }
+    if (direction === 6) {
+      setRotateDeg(0);
+    }
+    if (direction === 2) {
+      setRotateDeg(180);
+    }
+  }, [positionX]);
 
-  useEffect(() => {
-    setPoints((prev) => [...prev, { x: positionX, y: positionY }]);
-  }, [positionX, positionY]);
+  axios.get("http://172.20.10.9:3001/").then((res) => {
+    setPoints(res.data);
+    setPositionX(res.data[res.data.length - 1].x);
+    setPositionY(res.data[res.data.length - 1].y);
+    setDirection(res.data[res.data.length - 1].dir);
+  });
+
+  console.log("MESSAGE", points, positionX, positionY);
+
+  //  useEffect(() => {
+  //    const handleKey = (e: KeyboardEvent) => {
+  //
+  //    };
+  //    window.addEventListener("keydown", handleKey);
+  //    return () => window.removeEventListener("keydown", handleKey);
+  //  }, []);
+
+  //  useEffect(() => {
+  //    setPoints((prev) => [...prev, { x: positionX, y: positionY }]);
+  //  }, [positionX, positionY]);
 
   useEffect(() => {
     html2canvas((document as any).querySelector("#layout")).then((canvas) => {
@@ -52,27 +64,27 @@ const MainPage: React.FC = () => {
         return;
       }
 
-      canvas.style.filter = "brightness(4)";
+      canvas.style.filter = "brightness(3.5) grayscale(1)";
 
       let posX = 550,
         posY = 300;
 
-      if (rotateDeg === -90) {
+      if (direction === 4) {
         posX = 550 - 60;
         posY = 300;
       }
 
-      if (rotateDeg === 90) {
+      if (direction === 0) {
         posX = 550 + 70;
         posY = 300;
       }
 
-      if (rotateDeg === 0) {
+      if (direction === 6) {
         posX = 550;
         posY = 300 - 70;
       }
 
-      if (rotateDeg === 180) {
+      if (direction === 2) {
         posX = 550;
         posY = 300 + 100;
       }
@@ -93,8 +105,8 @@ const MainPage: React.FC = () => {
       <InfoContainer>
         <CoordinatesTitle>Coordinates</CoordinatesTitle>
         <Coordinates>
-          <div>Lat: -13.29414°</div>
-          <div>Lon: -10.92728°</div>
+          <div>Lat: {positionX}</div>
+          <div>Lon: {positionY}</div>
         </Coordinates>
       </InfoContainer>
       <Map id="layout">
@@ -221,7 +233,7 @@ const ModelContainer = styled.div<{
   transition: transform 0.3s;
   cursor: pointer;
   z-index: 4;
-  transition: all 0.1s;
+  transition: all 1s;
 `;
 
 const Container = styled.div`
@@ -255,7 +267,7 @@ const Layout = styled.div<{ positionx: number; positiony: number }>`
   background-size: 3000px;
   z-index: 0;
 
-  transition: all 0.1s;
+  transition: all 1s;
 `;
 
 export default MainPage;
