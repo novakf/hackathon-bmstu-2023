@@ -9,7 +9,15 @@ var charge_down = 0;
 var charge_up = 0; // кол-во запросов, в течение которых наш марсоход будет заряжаться 
 
 app.use(express.json()); // middleware для более простого парсинга тела запроса post 
-
+app.use(function (req, res, next) {
+  res.setHeader("Access-Control-Allow-Origin", "*");
+  res.setHeader("Access-Control-Allow-Methods", "GET,POST,PUT,DELETE,OPTIONS");
+  res.setHeader(
+  "Access-Control-Allow-Headers",
+  "Content-Type, Access-Control-Allow-Headers", "X-Requested-With"
+  );
+  next();
+  });
 // Создаем объект, который будет содержать направление и значение направления для скорости 
 const DirectionEnumX = {
   0: -1, // означает, что по направлению 0 (вправо), мы будем уменьшать нашу координату
@@ -90,7 +98,7 @@ function DataAboutStation() {
       ++charge_up;
     }
   }
-
+  console.log ("DIrection",stat.direction)
   axios.post(targetUrl, {
     id: stat.id,
     name: stat.name,

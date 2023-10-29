@@ -26,7 +26,7 @@ return new Promise(function (resolve, reject) {
 console.log();
 pool.query(
 "insert into stations (x,y,v,dir, charge) values($1,$2,$3, $4,$5)",
-[body.x, body.y, body.v, body.diraction, body.charge],
+[body.x, body.y, body.v, body.direction, body.charge],
 (error, results) => {
 if (error) {
 reject(error);

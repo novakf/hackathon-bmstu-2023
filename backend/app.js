@@ -31,6 +31,7 @@ ws.send('Hi there, I am a WebSocket server');
 
 app.post('/station_change',(req, res) => {
 //отправить в бд
+console.log(req.body)
 model.postStation(req.body)
 .then((respomse)=>{
 res.status(200);
@@ -40,24 +41,6 @@ res.status(200);
 res.status(400);
 })
 })
-// model.getStations()
-/* .then((response)=>{
-webSocketServer.on('connection', ws => {
-ws.send(req.body)
-console.log("got info ")
-})})
-.catch((err)=>{
-ws.send(err)
-}*/
-
-/*try {
-webSocketServer.on('connection', ws => {
-ws.send(req.body.toString());
-})
-} catch(e) {
-console.log(e)
-}
-console.log("got info ")*/
 
 app.get(`/`, (request, res) => {
 model
@@ -75,14 +58,9 @@ res.status(500).send(error);
 app.post('/station', async (req, res) => {
 
 console.log(req.body);
-// Опции для POST-запроса на веб-сервисе
-const options = {
-method: 'post',
-url: 'http://localhost:3000/update',
-data: req.body,
-};
+
 axios.post('http://127.0.0.1:3000/update',{
-direction:req.body.direction
+direction: req.body
 });
 
 // Отправка POST-запроса на другой сервис
