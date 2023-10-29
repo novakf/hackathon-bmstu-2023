@@ -25,9 +25,10 @@ const CircularMenu = () => {
 		if (ref.current && ref.current.contains(event.target)) {
 			console.log("asdf")
 			console.log(open)
-			setOpen(!open)
+			setOpen(true)
 			console.log(open)
 		}
+    else setOpen(false)
 	};
 
 	useEffect(() => {

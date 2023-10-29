@@ -52,7 +52,7 @@ const MainPage: React.FC = () => {
         return;
       }
 
-      canvas.style.filter = "brightness(3.5)";
+      canvas.style.filter = "brightness(4)";
 
       let posX = 550,
         posY = 300;
@@ -251,7 +251,7 @@ const Layout = styled.div<{ positionx: number; positiony: number }>`
   height: 30000px;
   margin-left: calc(-15000px + ${(props) => props.positionx}px);
   margin-top: calc(2 * ${(props) => props.positiony}px);
-  background: url("/src/assets/background1.jpg");
+  background: url("/src/assets/background2.jpg");
   background-size: 3000px;
   z-index: 0;
 
