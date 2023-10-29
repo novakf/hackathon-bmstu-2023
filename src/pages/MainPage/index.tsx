@@ -32,7 +32,7 @@ const MainPage: React.FC = () => {
     if (direction === 2) {
       setRotateDeg(180);
     }
-  }, [positionX]);
+  }, [points]);
 
   axios.get("http://172.20.10.9:3001/").then((res) => {
     setPoints(res.data);
@@ -57,14 +57,14 @@ const MainPage: React.FC = () => {
 
   useEffect(() => {
     html2canvas((document as any).querySelector("#layout")).then((canvas) => {
+      canvas.style.filter = "brightness(3.5) grayscale(1)";
+
       let c = canvas.getContext("2d");
 
       if (!c) {
         console.log("canvas error");
         return;
       }
-
-      canvas.style.filter = "brightness(3.5) grayscale(1)";
 
       let posX = 550,
         posY = 300;
@@ -95,7 +95,7 @@ const MainPage: React.FC = () => {
       const hexCode = rgbToHex(red, green, blue);
 
       console.log("Background color:", hexCode);
-      // document.body.appendChild(canvas);
+      //document.body.appendChild(canvas);
     });
   }, [positionX, positionY]);
 
@@ -139,7 +139,7 @@ const MainPage: React.FC = () => {
       <MapInfo>
         Map scale:
         <SizeLine />
-        <MapSize>210km</MapSize>
+        <MapSize>100km</MapSize>
       </MapInfo>
     </Container>
   );
