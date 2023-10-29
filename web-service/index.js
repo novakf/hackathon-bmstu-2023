@@ -59,7 +59,7 @@ app.post('/update', (req, res) => {
   const data = req.body;
   if (data) {
     stat.update(data);
-    res.status(200).json({ status: "OK" });
+    res.status(200).json({ status: "OK"});
   } else {
     res.status(400).json({ error: "Request body is empty" });
   }
