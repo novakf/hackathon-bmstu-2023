@@ -2,7 +2,7 @@ const express = require('express'); // Исправленный импорт б�
 const axios = require('axios'); // для асинхронных запросов 
 const app = express(); // Создание экземпляра приложения Express
 const PORT = process.env.PORT || 3000; // присвоения порта
-const targetUrl = "127.0.0.1:3001/station_charge"
+const targetUrl = "http://127.0.0.1:3001/station_change"
 const interval = 500; // миллисекунды 
 
 app.use(express.json()); // middleware для более простого парсинга тела запроса post 
@@ -66,13 +66,13 @@ app.post('/update', (req, res) => {
   }
 });
 
-// app.get('/status', (req, res) => {
-//   if (stat.charge !== 0) {
-//     res.status(200).json(stat);
-//   } else {
-//     res.status(500).json({error: "Server iSs not responding...."});
-//   }`
-// });
+app.get('/status', (req, res) => {
+  if (stat.charge !== 0) {
+    res.status(200).json(stat);
+  } else {
+    res.status(500).json({error: "Server is not responding...."});
+  }
+});
 
 
 function DataAboutStation() {
@@ -92,12 +92,6 @@ function DataAboutStation() {
     direction: stat.direction,
     charge: stat.charge
    })
-    .then(response => {
-      console.log('Запрос успешно отправлен:');
-    })
-    .catch(error => {
-      console.error('Ошибка при отправке запроса:', error);
-    });
 }
 
 setInterval(DataAboutStation, interval);
