@@ -57,10 +57,10 @@ res.status(500).send(error);
 
 app.post('/station', async (req, res) => {
 
-console.log(req.body);
+console.log(req.body.body, "BODY");
 
 axios.post('http://127.0.0.1:3000/update',{
-direction: req.body
+direction: req.body.body
 });
 
 // Отправка POST-запроса на другой сервис

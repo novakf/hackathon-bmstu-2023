@@ -3,7 +3,7 @@ const axios = require('axios'); // для асинхронных запросо�
 const app = express(); // Создание экземпляра приложения Express
 const PORT = process.env.PORT || 3000; // присвоения порта
 const targetUrl = "http://127.0.0.1:3001/station_change"
-const interval = 500; // миллисекунды 
+const interval = 2000; // миллисекунды 
 
 var charge_down = 0;
 var charge_up = 0; // кол-во запросов, в течение которых наш марсоход будет заряжаться 
@@ -14,7 +14,7 @@ app.use(function (req, res, next) {
   res.setHeader("Access-Control-Allow-Methods", "GET,POST,PUT,DELETE,OPTIONS");
   res.setHeader(
   "Access-Control-Allow-Headers",
-  "Content-Type, Access-Control-Allow-Headers", "X-Requested-With"
+  "Content-Type, Access-Control-Allow-Headers", 
   );
   next();
   });
@@ -61,7 +61,7 @@ class Stations {
   }
 }
 
-stat = new Stations('R2D2', 0, 0, 40, 8, 100); // наш марсоход 
+stat = new Stations('R2D2', 0, 0, 40, 8, 2); // наш марсоход 
 
 app.post('/update', (req, res) => {
   const data = req.body;
@@ -81,9 +81,11 @@ function DataAboutStation() {
   stat.x += sign_Vx * stat.v;
   stat.y += sign_Vy * stat.v;
 
-
+  if (stat.charge==0){
+    stat.direction = 8;
+  }
   // Описываем процесс зарядки и разрядки марсохода 
-  if (charge_down % 25 == 0 && charge_down != 0 && stat.direction != 8) { // заряд машины теряется на каждые 50 запросов
+  if (charge_down % 5 == 0 && charge_down != 0 && stat.direction != 8) { // заряд машины теряется на каждые 50 запросов
     --stat.charge;
     charge_down = 0;
   } else {
@@ -91,7 +93,7 @@ function DataAboutStation() {
   }
 
   if (stat.direction == 8 && stat.charge != 100) {
-    if (charge_up % 10 == 0 && charge_up != 0) {
+    if (charge_up % 5 == 0 && charge_up != 0) {
       ++stat.charge;
       charge_up = 0;
     } else {
