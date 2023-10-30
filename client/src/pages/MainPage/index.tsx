@@ -35,7 +35,7 @@ const MainPage: React.FC = () => {
     }
   }, [points]);
 
-  axios.get("http://172.20.10.9:3001/").then((res) => {
+  axios.get("http://localhost:3001/").then((res) => {
     setPoints(res.data);
     setPositionX(res.data[res.data.length - 1].x);
     setPositionY(res.data[res.data.length - 1].y);

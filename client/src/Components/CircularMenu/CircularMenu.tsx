@@ -22,7 +22,7 @@ const CircularMenu = () => {
 
   const handleClick = (index: number) => {
     axios
-      .post("http://172.20.10.9:3001/station", {
+      .post("http://localhost:3001/station", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
