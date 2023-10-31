@@ -1,24 +1,20 @@
 import { styled } from "styled-components";
 import "./CircularMenu.sass";
 import CircularMenuItem from "./CircularMenuItem/CircularMenuItem";
-import { useEffect, useRef, useState } from "react";
+import { useRef } from "react";
 import axios from "axios";
 
 const CircularMenu = () => {
   const degresss = [0, 45, 90, 135, 180, 225, 270, 315];
+  const ref = useRef<HTMLDivElement>(null);
 
-  const [open, setOpen] = useState<boolean>(true);
-
-  const ref = useRef(null);
-
-  const handleClickOutside = (event) => {
-    console.log("handleClickOutside");
-    if (ref.current && ref.current.contains(event.target)) {
-      console.log("asdf");
-      console.log(open);
-      console.log(open);
-    }
-  };
+//  const [open, setOpen] = useState<boolean>(true);
+//  const handleClickOutside = (event: MouseEvent) => {
+//    console.log("handleClickOutside");
+//    if (ref.current && ref.current.contains(event.target)) {
+//      console.log(open);
+//    }
+//  };
 
   const handleClick = (index: number) => {
     axios
@@ -37,18 +33,18 @@ const CircularMenu = () => {
       });
   };
 
-  useEffect(() => {
-    document.addEventListener("click", handleClickOutside, true);
-    return () => {
-      document.removeEventListener("click", handleClickOutside, true);
-    };
-  }, []);
+//  useEffect(() => {
+//    document.addEventListener("click", handleClickOutside, true);
+//    return () => {
+//      document.removeEventListener("click", handleClickOutside, true);
+//    };
+//  }, []);
 
   return (
     <R>
-      <Container className={"circular-menu " + (open ? "open" : "")} ref={ref}>
+      <Container className={"circular-menu open"} ref={ref}>
         {degresss.map((deg, index) => {
-          return <CircularMenuItem rotation={deg} index={index} />;
+          return <CircularMenuItem key={index} rotation={deg} index={index} />;
         })}
         <div  onClick={() => handleClick(8)} style={{color: "white", cursor: "pointer", marginTop: "5px"}}>Stop</div>
       </Container>

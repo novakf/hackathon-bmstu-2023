@@ -1,9 +1,9 @@
 import React, { useEffect, useState } from "react";
 import SpaceCraft from "../../icons/SpaceCraft";
 import styled from "styled-components";
-import Tooltip from "../../Components/MainPage/ToolTip";
+import Tooltip from "../../components/MainPage/ToolTip";
 import MapPointIcon from "../../icons/MapPointIcon";
-import CircularMenu from "../../Components/CircularMenu/CircularMenu";
+import CircularMenu from "../../components/CircularMenu/CircularMenu";
 import html2canvas from "html2canvas";
 import { WSconnect } from "../../model";
 import axios from "axios";

@@ -1,11 +1,11 @@
 import React from "react";
 import { BrowserRouter, Route, Routes } from "react-router-dom";
 import MainPage from "../pages/MainPage";
-import "../Styles/Main.sass"
-import "../Styles/Reset.sass"
-import "../Styles/Fonts.sass"
-import "../Styles/variables.sass"
-import Header from "../Components/Header/Header";
+import "../styles/Main.sass"
+import "../styles/Reset.sass"
+import "../styles/Fonts.sass"
+import "../styles/variables.sass"
+import Header from "../components/Header/Header";
 
 
 const App: React.FC = () => {
