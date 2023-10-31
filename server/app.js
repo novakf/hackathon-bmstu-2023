@@ -29,6 +29,17 @@ app.use(function (req, res, next) {
 //   ws.send("Hi there, I am a WebSocket server");
 // });
 
+app.delete("/", (req, res) => {
+  model
+    .clearData()
+    .then((response) => {
+      res.status(200).send(response);
+    })
+    .catch((error) => {
+      res.status(500).send(error);
+    });
+});
+
 app.post("/station_change", (req, res) => {
   //отправить в бд
   model

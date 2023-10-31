@@ -24,14 +24,26 @@ const MainPage: React.FC = () => {
     if (direction === 4) {
       setRotateDeg(-90);
     }
+    if (direction === 5) {
+      setRotateDeg(-45);
+    }
     if (direction === 0) {
       setRotateDeg(90);
+    }
+    if (direction === 1) {
+      setRotateDeg(135);
     }
     if (direction === 6) {
       setRotateDeg(0);
     }
+    if (direction === 7) {
+      setRotateDeg(45);
+    }
     if (direction === 2) {
       setRotateDeg(180);
+    }
+    if (direction === 3) {
+      setRotateDeg(225);
     }
   }, [points]);
 
@@ -42,6 +54,10 @@ const MainPage: React.FC = () => {
     setDirection(res.data[res.data.length - 1].dir);
     setCharge(res.data[res.data.length - 1].charge);
   });
+
+  const clearRoute = () => {
+    axios.delete("http://localhost:3001/");
+  };
 
   console.log("MESSAGE", points, positionX, positionY);
 
@@ -106,7 +122,11 @@ const MainPage: React.FC = () => {
 
   return (
     <Container>
-      <Title>Route map</Title>
+      <Header>
+        <Title>Route map</Title>
+        <ClearButton onClick={clearRoute}>Clear route</ClearButton>
+      </Header>
+
       <CircularMenu />
       <InfoContainer>
         <CoordinatesTitle>Coordinates</CoordinatesTitle>
@@ -152,6 +172,22 @@ const MainPage: React.FC = () => {
     </Container>
   );
 };
+
+const Header = styled.div`
+  display: flex;
+  justify-content: space-between;
+`;
+
+const ClearButton = styled.button`
+  border: none;
+  background: transparent;
+  cursor: pointer;
+  font-size: 20px;
+
+  &:hover {
+    color: red;
+  }
+`;
 
 const Point = styled.div<{
   positionx: number;

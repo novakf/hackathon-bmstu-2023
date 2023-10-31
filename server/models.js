@@ -36,3 +36,14 @@ export const postStation = (body) => {
     );
   });
 };
+
+export const clearData = () => {
+  return new Promise(function (resolve, reject) {
+    pool.query("truncate stations", (error, results) => {
+      if (error) {
+        reject(error);
+      }
+      if (results) resolve(`Cleared`);
+    });
+  });
+};

@@ -54,13 +54,15 @@ const CircularMenu = () => {
 
 const R = styled.div`
   display: flex;
+  position: absolute;
   flex-direction: column;
 `;
 
 const Container = styled.div`
   z-index: 1000;
   left: 980px;
-  top: 120px;
+  top: -180px;
+  cursor: pointer;
 `;
 
 export default CircularMenu;
