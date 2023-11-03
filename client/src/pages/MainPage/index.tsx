@@ -5,7 +5,6 @@ import Tooltip from "../../components/MainPage/ToolTip";
 import MapPointIcon from "../../icons/MapPointIcon";
 import CircularMenu from "../../components/CircularMenu/CircularMenu";
 import html2canvas from "html2canvas";
-import { WSconnect } from "../../model";
 import axios from "axios";
 
 const rgbToHex = (r: number, g: number, b: number) =>
@@ -58,6 +57,10 @@ const MainPage: React.FC = () => {
   const clearRoute = () => {
     axios.delete("http://localhost:3001/");
   };
+
+  if (points.length > 200) {
+    axios.delete("http://localhost:3001/");
+  }
 
   console.log("MESSAGE", points, positionX, positionY);
 

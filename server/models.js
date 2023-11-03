@@ -4,10 +4,10 @@ import pkg from "pg";
 
 const { Pool } = pkg;
 const pool = new Pool({
-  user: "postgres",
   host: "localhost",
   database: "hackaton",
-  password: "302310",
+  user: "root",
+  password: "root",
   port: 5432,
 });
 export const getStations = () => {

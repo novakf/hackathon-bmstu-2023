@@ -1,0 +1,45 @@
+version: '3.4'
+
+services:
+  client-app:
+    image: client-app
+    build:
+      context: client
+      dockerfile: ./Dockerfile
+    depends_on:  
+      - server
+    ports:
+      - 5173:5173
+    network_mode: "host"
+  station:
+    image: station-app
+    build:
+      context: station
+      dockerfile: ./Dockerfile
+    depends_on:  
+      - server
+    ports:
+      - 3000:3000
+    network_mode: "host"
+  server:
+    image: server-app
+    build:
+      context: server
+      dockerfile: ./Dockerfile
+    depends_on:  
+      - postgres
+    ports:
+      - 3001:3001
+    network_mode: "host"
+  postgres:
+    image: postgres:14.1-alpine
+    restart: always
+    environment:
+      - POSTGRES_USER=root
+      - POSTGRES_PASSWORD=root
+      - POSTGRES_DB=hackaton
+    ports:
+      - "5432:5432"
+    volumes:
+      - ./database.sql:/docker-entrypoint-initdb.d/database.sql
+  
