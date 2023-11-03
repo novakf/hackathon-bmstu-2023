@@ -62,8 +62,6 @@ const MainPage: React.FC = () => {
     axios.delete("http://localhost:3001/");
   }
 
-  console.log("MESSAGE", points, positionX, positionY);
-
   //  useEffect(() => {
   //    const handleKey = (e: KeyboardEvent) => {
   //
